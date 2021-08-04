@@ -1,4 +1,4 @@
-/*package database
+package database
 
 import (
 	"fmt"
@@ -8,9 +8,9 @@ import (
 
 var Eloquent *gorm.DB
 
-func init() {
+func Init() {
 	var err error
-	Eloquent, err = gorm.Open("mysql", "gongna2:123456@FreshmanGuidance?charset=utf8&parseTime=True&loc=Local")
+	Eloquent, err = gorm.Open("mysql", "gongna2:123456@tcp/Test?charset=utf8&parseTime=True&loc=Local")
 
 	if err != nil {
 		fmt.Printf("mysql connect error %v", err)
