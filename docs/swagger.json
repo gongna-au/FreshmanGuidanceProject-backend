@@ -1,0 +1,155 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "新生引导项目API",
+        "title": "新生引导项目",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "gongna",
+            "url": "http://www.swagger.io/support",
+            "email": "20364719155@qq.com"
+        },
+        "license": {
+            "name": "Apache 2.0"
+        },
+        "version": "1.0"
+    },
+    "host": "8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "输入学号和密码登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Login 用户登录接口",
+                "parameters": [
+                    {
+                        "description": "登录的用户信息",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Person"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"Code\":\"10002\", \"Message\":\"Error occurred while binding the request body to the struct. \"}",
+                        "schema": {
+                            "$ref": "#/definitions/apis.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"Code\":\"20002\", \"Message\":\"Database error:The student ID you entered is incorrect, please try again\"}",
+                        "schema": {
+                            "$ref": "#/definitions/apis.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/spot/:id": {
+            "put": {
+                "description": "在URL中输入地标ID,Body里输入学号就可以实现更新用户个人的探索记录，不论是否探索过该地标都会得到地标的信息，实现了重复探索。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "UpdateSpotAndKnowNum 操作用户移动更新用户探索数据接口",
+                "parameters": [
+                    {
+                        "description": "只输入学号",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Person"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Person"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"Code\":\"10002\", \"Message\":\"Error occurred while binding the request body to the struct. \"}",
+                        "schema": {
+                            "$ref": "#/definitions/apis.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"Code\":\"20002\", \"Message\":\"Database error:The student ID you entered is incorrect, please try again .\"}",
+                        "schema": {
+                            "$ref": "#/definitions/apis.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "apis.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Person": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "列名为 `id`",
+                    "type": "integer"
+                },
+                "num_of_know": {
+                    "description": "列名为 `num_of_know\"`",
+                    "type": "integer"
+                },
+                "num_of_spot": {
+                    "description": "列名为 `num_of_spot`",
+                    "type": "integer"
+                },
+                "password": {
+                    "description": "列名为 `password`",
+                    "type": "string"
+                },
+                "student_id": {
+                    "description": "列名为 `student_id`",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
