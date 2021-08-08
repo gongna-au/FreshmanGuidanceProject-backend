@@ -112,48 +112,49 @@ func JudgeUserLevel(c *gin.Context, p model.Person, tag1 int, tag2 int) {
 
 	var temp1 int
 	var temp2 int
-	var temp3 int
+	//var temp3 int
 	temp1 = int((NumOfSpot / 14.0) * 100)
 	temp2 = int((NumOfKnow / 21.0) * 100)
-	temp3 = int(((NumOfSpot/14.0)*100 + (NumOfKnow/21.0)*100) / 2.0)
+	//temp3 = int(((NumOfSpot/14.0)*100 + (NumOfKnow/21.0)*100) / 2.0)
 
 	OverPercentageOfSpot := "探索地标值" + strconv.Itoa(temp1) + "%"
 	OverPercentageOfKnow := "获得见闻值" + strconv.Itoa(temp2) + "%"
-	level := "超过了" + strconv.Itoa(temp3) + "%的山民"
+	//level := "超过了" + strconv.Itoa(temp3) + "%的山民"
 	MountainNameNumber := "山民" + u.StudentId
 
 	//探索的特殊地标数
-	NumOfSpeciaLandmarks := "探索特殊地标数：" + strconv.Itoa(tag1)
+	NumOfSpeciaLandmarks := "点亮特殊地标：" + strconv.Itoa(tag1)
 	//探索的普通地标数
-	NumOfCommenLandmarks := "探索普通地标数：" + strconv.Itoa(tag2)
+	NumOfCommenLandmarks := "点亮普通地标：" + strconv.Itoa(tag2)
 	//判断解锁了多少个特殊地标
 
+	theFirstexplorer := "成为第" + strconv.Itoa(u.ID) + "个点亮所有地标的探索者"
 	if (u.NumOfSpot <= 4) && (u.NumOfSpot >= 1) {
 
-		SendResponse(c, u, MountainNameNumber, "Congratulations on getting the honorary title of ---Junior Explorer初级探索者---", OverPercentageOfSpot, NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, level)
+		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--初级探索者")
 		return
 	}
 	if (u.NumOfSpot > 4) && (u.NumOfSpot <= 7) {
 
-		SendResponse(c, u, MountainNameNumber, "Congratulations on winning the honorary title of ---Intermediate Explorer中级探索者---", OverPercentageOfSpot, NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, level)
+		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--中级探索者")
 		return
 	}
 	if (u.NumOfSpot > 7) && (u.NumOfSpot <= 11) {
 
-		SendResponse(c, u, MountainNameNumber, "Congratulations on winning the honorary title of ---Advanced Explorer进阶探索者---", OverPercentageOfSpot, NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, level)
+		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--进阶探索者")
 		return
 	}
 
 	if (u.NumOfSpot > 11) && (u.NumOfSpot < 14) {
 
-		SendResponse(c, u, MountainNameNumber, "Congratulations on winning the honorary title of ---Pioneer Explorer先锋探索者---", OverPercentageOfSpot, NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, level)
+		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--先锋探索者")
 
 		return
 	}
 
 	if u.NumOfSpot == 14 {
 
-		SendResponse(c, u, MountainNameNumber, "Congratulations on winning the honorary title of ---Pioneer Explorer先锋探索者---", OverPercentageOfSpot, NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, "超过了99.99%的山民")
+		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, theFirstexplorer, "获得称号--先锋探索者")
 
 		return
 	}
