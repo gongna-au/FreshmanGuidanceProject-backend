@@ -1,7 +1,8 @@
+Create database Test;
 use  `Test`;
 
 
-
+DROP TABLE IF EXISTS persons;
 CREATE TABLE `persons` (
   `id`                  int               AUTO_INCREMENT,
   `student_id`          varchar(10)           UNIQUE,
@@ -16,6 +17,8 @@ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
 
 
+
+DROP TABLE IF EXISTS spots;
 CREATE TABLE `spots` (
   `id`              int   ,
   `name`            varchar(30)              DEFAULT NULL,
@@ -29,6 +32,7 @@ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
 
 
+DROP TABLE IF EXISTS explorations;
 CREATE TABLE `explorations` (
   `id`              int                      AUTO_INCREMENT,
   `student_id`      varchar(10)              DEFAULT NULL,

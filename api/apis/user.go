@@ -21,7 +21,7 @@ type Person struct {
 
 // Register 用户注册接口
 // @Summary Register 用户注册接口
-// @Description 可通过10位学号和密码注册账号
+// @Description 可通过10位学号和密码注册账号(前缀必须是2018、2019、2020，2021)
 // @Accept application/json
 // @Produce application/json
 // @Param object body model.Person true "登录的用户信息"
@@ -45,6 +45,16 @@ func Register(c *gin.Context) {
 	person, err = JudgeUserInput(c, person)
 	if (person == (model.Person{})) || (err != nil) {
 		SendError(c, err.Error())
+	}
+
+	//判断学号前缀是否是2018/2019/2020/2021
+	person, err = JudgeUserInputPreview(c, person)
+
+	if (err != nil) || (person == model.Person{}) {
+
+		SendError(c, err.Error())
+		return
+
 	}
 	//调用功能函数
 	u, err := person.Register()

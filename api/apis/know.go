@@ -59,6 +59,17 @@ func UpdateSpotAndKnowNum(c *gin.Context) {
 
 	}
 	//学号合法
+
+	//判断学号前缀是否是2018/2019/2020/2021
+	person, err = JudgeUserInputPreview(c, person)
+
+	if (err != nil) || (person == model.Person{}) {
+
+		SendError(c, err.Error())
+		return
+
+	}
+
 	//判断用户是否存在
 	u, err := model.GetUserByStudentId(person.StudentId)
 

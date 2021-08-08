@@ -4,11 +4,13 @@ import (
 	//"errors"
 	"errors"
 	//"fmt"
+	//"fmt"
+	"net/http"
+	"strconv"
+
 	errno "github.com/FreshmanGuidanceProject/api/errno"
 	model "github.com/FreshmanGuidanceProject/api/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strconv"
 	//"github.com/jinzhu/gorm"
 )
 
@@ -88,6 +90,89 @@ func JudgeUserInput(c *gin.Context, person model.Person) (u model.Person, err er
 	}
 	//如果是合法的学号，返回传入的结构体和nil
 	return person, nil
+
+}
+
+func JudgeUserInputPreview(c *gin.Context, person model.Person) (u model.Person, err error) {
+	u = model.Person{}
+	var i int = 0
+	var studentIdPreview int = 0
+	var tag int = 0
+	ptrtag := &tag
+	//tag=1代表学号合法
+	ptrstudentIdPreview := &studentIdPreview
+	for k, v := range []rune(person.StudentId) {
+		i++
+
+		//把字符串转化为数字一定可以转化为数字，因为我们之前判断出来得到的字符都是数字
+		temp, err := strconv.Atoi(string(v))
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, Response{
+				Code:    errno.ErrUserInput.Code,
+				Message: errno.ErrUserInput.Message + "More specific information is：" + "The student ID entered by the user contains illegal characters",
+				Data:    person,
+			})
+			//有非法字符，返回空结构体
+			return u, errors.New("The student ID you entered is incorrect, please try again")
+
+		}
+
+		//前两位学号判断
+		if (k == 0) && (temp != 2) {
+			c.JSON(http.StatusBadRequest, Response{
+				Code:    errno.ErrUserInput.Code,
+				Message: errno.ErrUserInput.Message + "More specific information is：" + "The  student ID entered by the user is incorrect",
+				Data:    person,
+			})
+
+			return u, errors.New("The student ID you entered is incorrect, please try again")
+
+		}
+		if (k == 1) && (temp != 0) {
+			c.JSON(http.StatusBadRequest, Response{
+				Code:    errno.ErrUserInput.Code,
+				Message: errno.ErrUserInput.Message + "More specific information is：" + "The student ID entered by the user is incorrect",
+				Data:    person,
+			})
+
+			return u, errors.New("The student ID you entered is incorrect, please try again")
+
+		}
+
+		//第三位和第四位学号判断
+		if k == 2 {
+			*ptrstudentIdPreview = *ptrstudentIdPreview + temp*10
+		}
+		if k == 3 {
+			*ptrstudentIdPreview = *ptrstudentIdPreview + temp*1
+
+			if (studentIdPreview == 18) || (studentIdPreview == 19) || (studentIdPreview == 20) || (studentIdPreview == 21) {
+				*ptrtag = 1
+			}
+		}
+
+		if i == 4 {
+			break
+		}
+
+	}
+
+	//跳出循环进行判断
+	if tag == 1 {
+		//如果是合法的学号，返回传入的结构体和nil
+		return person, nil
+
+	} else {
+
+		c.JSON(http.StatusBadRequest, Response{
+			Code:    errno.ErrUserInput.Code,
+			Message: errno.ErrUserInput.Message + "More specific information is：" + "The student ID entered by the user is incorrect",
+			Data:    person,
+		})
+
+		return u, errors.New("The student ID you entered is incorrect, please try again")
+	}
 
 }
 
