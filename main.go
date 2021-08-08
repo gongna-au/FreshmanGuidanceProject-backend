@@ -28,8 +28,6 @@ func main() {
 	//数据库的初始化
 	DB.Init()
 
-	//database.Eloquent, err = gorm.Open("mysql", "gongna2:123456@tcp/Test?charset=utf8&parseTime=True&loc=Local")
-
 	//新建路由
 	r := gin.Default()
 	//加载路由
