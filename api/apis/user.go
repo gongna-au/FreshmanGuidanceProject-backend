@@ -129,30 +129,24 @@ func JudgeUserLevel(c *gin.Context, p model.Person, tag1 int, tag2 int) {
 	//判断解锁了多少个特殊地标
 
 	theFirstexplorer := "成为第" + strconv.Itoa(u.ID) + "个点亮所有地标的探索者"
-	if (u.NumOfSpot <= 4) && (u.NumOfSpot >= 1) {
+	if (u.NumOfKnow < 8) && (u.NumOfKnow >= 0) {
 
 		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--初级探索者")
 		return
 	}
-	if (u.NumOfSpot > 4) && (u.NumOfSpot <= 7) {
-
-		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--中级探索者")
-		return
-	}
-	if (u.NumOfSpot > 7) && (u.NumOfSpot <= 11) {
+	if (u.NumOfKnow > 7) && (u.NumOfKnow < 15) {
 
 		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--进阶探索者")
 		return
 	}
 
-	if (u.NumOfSpot > 11) && (u.NumOfSpot < 14) {
+	if (u.NumOfKnow > 14) && (u.NumOfKnow < 21) {
 
 		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, OverPercentageOfSpot, "获得称号--先锋探索者")
-
 		return
 	}
 
-	if u.NumOfSpot == 14 {
+	if u.NumOfKnow == 21 {
 
 		SendResponse(c, u, MountainNameNumber, "你在本次登岛探索中", NumOfSpeciaLandmarks, NumOfCommenLandmarks, OverPercentageOfKnow, theFirstexplorer, "获得称号--先锋探索者")
 
