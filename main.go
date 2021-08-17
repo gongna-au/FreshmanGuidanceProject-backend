@@ -2,13 +2,15 @@ package main
 
 import (
 	"fmt"
+	//"log"
 	"net/http"
 
 	DB "github.com/FreshmanGuidanceProject/api/database"
 	router "github.com/FreshmanGuidanceProject/api/router"
-	"github.com/FreshmanGuidanceProject/setting"
+	config "github.com/FreshmanGuidanceProject/config"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql" //加载mysql
+	"github.com/jinzhu/gorm"
 )
 
 var err error
@@ -28,9 +30,29 @@ func main() {
 	// @BasePath /api/v1
 
 	//配置文件的初始化
-	setting.Init()
+	config.Init()
+
+	dbType := config.V.GetString("db.type")
+
+	user := config.V.GetString("db.user")
+	fmt.Println(config.V.GetString("db.user"))
+	password := config.V.GetString("db.password")
+	fmt.Println(config.V.GetString("db.password"))
+	host := config.V.GetString("db.host")
+	dbName := config.V.GetString("db.database")
+	DB.Eloquent, err = gorm.Open(dbType, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+		user,
+		password,
+		host,
+		dbName))
+	if err != nil {
+		fmt.Println(err)
+	}
+	DB.Eloquent.DB().SetMaxIdleConns(10000)
+	DB.Eloquent.DB().SetMaxOpenConns(10000)
+
 	//数据库的初始化
-	DB.Init()
+	//DB.Init()
 
 	//新建路由
 	r := gin.Default()
@@ -38,10 +60,10 @@ func main() {
 	//加载路由
 	r = router.LoadRouter(r)
 	s := &http.Server{
-		Addr:         fmt.Sprintf(":%d", setting.HTTPPort),
+		Addr:         fmt.Sprintf(":%d", config.HTTPPort),
 		Handler:      r,
-		ReadTimeout:  setting.ReadTimeout,
-		WriteTimeout: setting.WriteTimeout,
+		ReadTimeout:  config.ReadTimeout,
+		WriteTimeout: config.WriteTimeout,
 	}
 	s.ListenAndServe()
 }

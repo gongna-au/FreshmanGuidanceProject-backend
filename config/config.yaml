@@ -1,0 +1,13 @@
+RUN_MODE: debug  
+db:
+  type: "mysql"
+  user: "gongna2"
+  password: "123456"
+  host: "127.0.0.1"
+  database: "Test"
+server:
+  HTTP_PORT : 8000
+  READ_TIMEOUT: 60
+  WRITE_TIMEOUT: 60
+app:
+    PAGE_SIZE: 10
