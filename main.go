@@ -1,10 +1,12 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
+	"net/http"
 
 	DB "github.com/FreshmanGuidanceProject/api/database"
 	router "github.com/FreshmanGuidanceProject/api/router"
+	"github.com/FreshmanGuidanceProject/setting"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql" //加载mysql
 )
@@ -25,12 +27,21 @@ func main() {
 	// @host 8080
 	// @BasePath /api/v1
 
+	//配置文件的初始化
+	setting.Init()
 	//数据库的初始化
 	DB.Init()
 
 	//新建路由
 	r := gin.Default()
+
 	//加载路由
 	r = router.LoadRouter(r)
-	r.Run(":8080")
+	s := &http.Server{
+		Addr:         fmt.Sprintf(":%d", setting.HTTPPort),
+		Handler:      r,
+		ReadTimeout:  setting.ReadTimeout,
+		WriteTimeout: setting.WriteTimeout,
+	}
+	s.ListenAndServe()
 }

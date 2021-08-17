@@ -1,5 +1,7 @@
-Create database Test;
-use  `Test`;
+drop database if exists `FreshmanGuidanceProject`;
+create database `FreshmanGuidanceProject`;
+use  `FreshmanGuidanceProject`;
+
 
 
 DROP TABLE IF EXISTS persons;
