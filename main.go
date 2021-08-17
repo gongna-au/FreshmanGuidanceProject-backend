@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	//"log"
 	"net/http"
 
@@ -31,13 +32,10 @@ func main() {
 
 	//配置文件的初始化
 	config.Init()
-
+	//数据库的初始化
 	dbType := config.V.GetString("db.type")
-
 	user := config.V.GetString("db.user")
-	fmt.Println(config.V.GetString("db.user"))
 	password := config.V.GetString("db.password")
-	fmt.Println(config.V.GetString("db.password"))
 	host := config.V.GetString("db.host")
 	dbName := config.V.GetString("db.database")
 	DB.Eloquent, err = gorm.Open(dbType, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
@@ -45,8 +43,9 @@ func main() {
 		password,
 		host,
 		dbName))
+
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 	DB.Eloquent.DB().SetMaxIdleConns(10000)
 	DB.Eloquent.DB().SetMaxOpenConns(10000)

@@ -1,10 +1,10 @@
 RUN_MODE: debug  
 db:
-  type: "mysql"
-  user: "gongna2"
-  password: "123456"
+  type: ""
+  user: ""
+  password: ""
   host: "127.0.0.1"
-  database: "Test"
+  database: "FreshmanGuidanceProject"
 server:
   HTTP_PORT : 8000
   READ_TIMEOUT: 60
